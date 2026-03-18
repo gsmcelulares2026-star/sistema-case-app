@@ -1,0 +1,32 @@
+# React Native Mobile App Implementation
+
+A estrutura web do sistema CapaStock provou ser útil para administração, mas para uso no dia-a-dia da loja física (especialmente para bipagem do código de barras na entrada/saída de capas) um aplicativo nativo se comporta melhor. 
+
+A proposta aqui é inicializar um projeto com **React Native (usando Expo)** e compartilhar a mesma infraestrutura relacional de dados consolidada recentemente.
+
+## User Review Required
+- Confirme se você possui um dispositivo em que queira rodar o app localmente (via app **Expo Go** disponível na Play Store / App Store) ou se testaremos por um emulador/navegador primeiramente.
+- Devo criar a nova pasta chamada `sistema-capas-app` paralelamente à pasta `sistema-capas` atual na sua pasta de Downloads?
+
+## Proposed Changes
+Criar um projeto totalmente novo usando `npx create-expo-app`.
+
+### Estrutura Base
+- Instalação das bibliotecas core: `react-navigation` (para o menu inferior e fluxo de telas), `@supabase/supabase-js`, e `expo-camera`.
+- Reutilização da lógica do Supabase: Os arquivos `supabase.ts`, [caseService.ts](file:///c:/Users/Jacir/Downloads/sistema-capas/src/services/caseService.ts), [movementService.ts](file:///c:/Users/Jacir/Downloads/sistema-capas/src/services/movementService.ts) e as tipagens de `$models/CaseModel.ts` serão adaptados inteiramente para o repositório novo.
+
+### 📱 Mapeamento de Telas (De Web -> Para Native)
+- **HomePage**: Lista os Ganchos. Usará `FlatList` nativo para alta performance, apresentando um buscador simples no topo com estatística base.
+- **AddCasePage**: Formulário React Native (com `TextInput` e `Picker/Select`) mapeando o envio das informações de Marca, Localização da parede e de *n* Capas (Variações) relacionadas para aquele gancho específico.
+- **ProductDetailPage**: Exibe a foto ilustrativa, localização completa (P-C-L). A grande diferença no mobile será botões grandes de [+] Entrada e [-] Saída de estoque com modais interativos.
+- **StockPage & ReportsPage**: Listagens otimizadas (tabelas e listas infinitas). Na versão mobile a extração para Excel é um plus complexo nativo (o web poderá continuar sendo usado primariamente para a área contábil/gestão), mas manteremos um resumo gerencial direto no celular.
+- **DashboardPage**: Gráficos e números macro do negócio usando alguma biblioteca adaptada de charts do react native.
+- **StoreMapPage**: Exibir a grade com `ScrollView` vertical e horizontal (para emular a parede).
+- **ScannerPage**: Substituiremos o placeholder de Scanner web pelo uso em tempo real da API proprietária do **Expo Camera**.
+
+## Verification Plan
+O projeto web ainda continua sendo útil como um painel Admin. A validação do novo app Mobile consistirá de:
+1. Iniciar o projeto usando o Expo (`npx expo start`).
+2. Logar no app consumindo o `VITE_SUPABASE_URL` do mesmo projeto do banco.
+3. Testar se o novo Dashboard lê a quantidade real das capas.
+4. Ler um Código de Barras válido no Scanner e constatar o fetch do gancho exato atrelado.

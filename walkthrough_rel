@@ -1,0 +1,26 @@
+# Reports and Excel Export - Walkthrough
+
+## O que foi implementado
+
+Foi desenvolvida uma nova área dedicada a **Relatórios** no aplicativo, atendendo à necessidade de extração e análise de dados de estoque do sistema de capas.
+
+### Funcionalidades
+- **Nova Tela de Relatórios:** Adicionada no menu inferior (`/relatorios`).
+- **Filtros Avançados:** 
+  - Situação do Estoque (Todo o estoque, Estoque Zerado, Estoque Baixo, Em Estoque).
+  - Consulta por Marca, Modelo, ou Código de Barras (pesquisa unificada).
+  - Filtro específico por Cor (ex: saber quais capas Pretas estão zeradas).
+- **Integração com Supabase:** O método [getReport](file:///c:/Users/Jacir/Downloads/sistema-capas/src/services/caseService.ts#15-39) permite filtragem dos dados com as queries da base.
+- **Exportação para Excel:** Utilizando a biblioteca `xlsx`, a tabela atual visualizada na tela pode ser exportada para um arquivo `.xlsx` automaticamente renomeado com a data de extração, com formatação tabular (Marca, Modelo, Tipo, Cor, Quantidade, Parede, Coluna, Linha, Código).
+
+## Verificação
+
+- Tipagem TypeScript verificada com sucesso via script de build.
+- A página renderiza dinamicamente as tabelas seguindo as alterações dos dropdowns/inputs sem bugs visuais.
+
+## Como testar
+
+1. Inicie a aplicação no modo de desenvolvimento (`npm run dev`).
+2. Vá até a aba **Relatórios** no menu inferior.
+3. Altere o filtro "Situação" para "Estoque Zerado" e verifique as capas exibidas.
+4. Clique em **Exportar Excel** e abra o arquivo baixado no seu software de planilhas de escolha para atestar que os dados estão coerentes e ordenados.

@@ -1,0 +1,9 @@
+﻿
+> sistema-capas@0.0.0 build
+> tsc && vite build
+
+src/pages/AddCasePage.tsx(51,11): error TS7022: 'newVariants' implicitly has type 'any' because it does not have a type annotation and is referenced directly or indirectly in its own initializer.
+src/pages/AddCasePage.tsx(51,25): error TS2349: This expression is not callable.
+  Type 'VariantFormData[]' has no call signatures.
+src/pages/AddCasePage.tsx(52,6): error TS2448: Block-scoped variable 'newVariants' used before its declaration.
+src/pages/StoreMapPage.tsx(25,38): error TS2339: Property 'getModelsByLocation' does not exist on type '{ getAllModels(): Promise<ModelWithVariants[]>; searchModels(query: string): Promise<ModelWithVariants[]>; getModelById(id: string): Promise<...>; ... 8 more ...; getReport(filters: { ...; }): Promise<...>; }'.

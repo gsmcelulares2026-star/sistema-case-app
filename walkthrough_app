@@ -1,0 +1,44 @@
+# Refatoração Estrutural: Ganchos e Variações de Capas - Walkthrough
+
+## O que foi implementado
+
+Foi realizada uma grande refatoração estrutural no aplicativo CapaStock para refletir melhor como o estoque funciona no mundo real. Em vez de cadastrar e buscar capas individualmente misturadas com os aparelhos, o sistema agora foca no **Gancho (Modelo de Aparelho)** e em suas respectivas **Variações de Capas Físicas**.
+
+### Melhorias Estruturais
+- **Supabase**: Tabelas divididas em `models` (os ganchos com Marca, Modelo, e Localização) e `case_variants` (as capas penduradas no gancho com Tipo, Cor, Código de Barras e Quantidade).
+- **Adição Simplificada**: A página "Adicionar" agora permite criar um gancho e já adicionar várias capas (Capa 1, Capa 2...) de uma só vez.
+- **Busca Rápida na Home**: A pesquisa na página inicial agora encontra o Gancho. Ao visualizar os resultados, você vê a quantidade de variações diferentes e a soma total de itens pendurados nele.
+- **Detalhes do Gancho (`/produto/:id`)**: Ao clicar em um aparelho, a nova tela de Produto lista todas as cores e tipos pendurados ali. Você pode facilmente dar entrada (+) ou saída (-) diretamente na linha específica da variação de capa que foi vendida.
+- **Dashboard e Relatórios**: O Dashboard agora mostra as estatísticas globais somando as variações. Os Relatórios (`/relatorios`) permitem extrair toda a matriz de "Gancho x Capa" e gerar arquivos em formato Excel para análises avançadas.
+- **Scanner Dinâmico**: O Scanner foi atualizado para localizar o código de barras de uma variação (uma capa específica) e redirecionar o lojista diretamente para as opções daquele gancho.
+
+## Verificação e Qualidade
+
+- Todo o código `TypeScript` da aplicação foi rigorosamente validado e atualizado para evitar erros durante o build.
+- O método de listagem e mapeamento na **Tela do Mapa (Store Map)** calcula sozinho se um espaço (L, C) está com muitos ganchos sem estoque e pinta as células do mapa corretamente.
+- Entradas e saídas de estoque (Movements) agora registram em banco a variação da capa, garantindo um Histórico super preciso no Dashboard (ex: "Saída - Silicone Preto - 1un").
+
+## Como testar (Web)
+
+1. Inicie a aplicação no modo de desenvolvimento (`npm run dev`).
+2. Tente **Buscar** por um aparelho na "Home".
+3. Vá em **Adicionar Novo Gancho** e crie um aparelho (ex "iPhone 15") e adicione três capas diferentes simultaneamente.
+4. Entre nesse "iPhone 15" e dê **Saída** em apenas uma cor específica. Note o histórico salvando corretamente a ação.
+5. Verifique a tela de **Relatórios** e **Estoque Geral** para ver todas as informações estruturadas de forma organizada.
+
+## Novo Aplicativo React Native (Mobile)
+
+Foi criado com sucesso um projeto irmão chamado `sistema-capas-app` focado no uso diário da operação física da loja através de celulares. Ele consome o exato mesmo banco de dados Supabase da versão web.
+
+### Funcionalidades do App
+- **Scanner Nativo**: Utiliza a própria câmera do celular via `expo-camera` para ler o código de barras da capa e saltar direto para ela (!).
+- **Interface Mobile-first**: Navegação por abas inferiores (`@react-navigation/bottom-tabs`), com botões de tamanho adequado para toque (Entrar / Sair rápidos).
+- **Login Persistente**: Usando `AsyncStorage`, o usuário se conecta e não precisa recolocar a senha sempre que abrir o app.
+
+#### Como testar o App Mobile
+
+1. Instale o aplicativo **Expo Go** em seu celular (Apple Store / Google Play).
+2. Abra um novo terminal no seu computador e navegue para a pasta do app: `cd sistema-capas-app`
+3. Inicie o servidor do Expo: `npx expo start`
+4. Use a câmera do seu celular para ler o **QR Code** que vai aparecer no terminal ou no navegador (ou pressione `a` no terminal se tiver o Android Studio instalado).
+5. O aplicativo vai compilar e abrir no seu celular físico! Você pode fazer login e começar a bipar as capas.
